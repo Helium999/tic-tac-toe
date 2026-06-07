@@ -40,5 +40,17 @@ const Players = {
             return "Player 1 already has this marker."
         }
         player2 = new Players.Player(name, marker, score);
+    },
+
+    returnCurrentScore(player) {
+        return player.score;
+    },
+
+    updateScore(player, updatedScore) {
+        player.score = updatedScore;
+    },
+
+    resetScore(player) {
+        player.score = 0;
     }
 }

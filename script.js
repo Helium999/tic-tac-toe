@@ -5,5 +5,9 @@ const Gameboard = {
         "", "", "",
         "", "", ""
     ],
+    
+    returnCurrentState(gameboard) {
+        return gameboard;
+    },
 }
 

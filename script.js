@@ -11,6 +11,9 @@ const Gameboard = {
     },
 
     updateBoard(gameboard, marker, position) {
+        if((gameboard[position] == "X") || (gameboard[position] == "O")) {
+            return "That position is already occupied."
+        }
         gameboard[position] = marker;
     },
 

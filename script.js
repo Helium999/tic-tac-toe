@@ -11,9 +11,6 @@ const Gameboard = {
     },
 
     updateBoard(gameboard, marker, position) {
-        if((gameboard[position] == "X") || (gameboard[position] == "O")) {
-            return "That position is already occupied."
-        }
         gameboard[position] = marker;
     },
 
@@ -32,17 +29,13 @@ const Players = {
     },
 
     createPlayer1(name, marker, score) {
-        player1 = new Players.Player(name, marker, score);
+        let player1 = new Players.Player(name, marker, score);
+        return player1;
     },
 
     createPlayer2(name, marker, score) {
-        if(name === player1.name) {
-            return "Choose a different name than Player1."
-        }
-        if(marker === player1.marker) {
-            return "Player 1 already has this marker."
-        }
-        player2 = new Players.Player(name, marker, score);
+        let player2 = new Players.Player(name, marker, score);
+        return player2;
     },
 
     returnCurrentScore(player) {
@@ -57,3 +50,58 @@ const Players = {
         player.score = 0;
     }
 }
+
+const GameController = (function() {
+    let player1;
+    let player2;
+    let currentPlayer;
+
+    function startGame() {
+        player1 = Players.createPlayer1("Aditya", "X", 0);
+        player2 = Players.createPlayer2("Bob", "O", 0)
+        currentPlayer = player1;
+    }
+
+    function switchTurn() {
+        if(currentPlayer === player1) {
+            currentPlayer = player2;
+        }
+        else {
+            currentPlayer = player1;
+        }
+    }
+
+    function checkWinner() {
+        if((Gameboard.gameboard[0] === Gameboard.gameboard[1] && Gameboard.gameboard[1] === Gameboard.gameboard[2] && Gameboard.gameboard[2] !== "") ||
+            (Gameboard.gameboard[3] === Gameboard.gameboard[4] && Gameboard.gameboard[4] === Gameboard.gameboard[5] && Gameboard.gameboard[5] !== "") ||
+            (Gameboard.gameboard[6] === Gameboard.gameboard[7] && Gameboard.gameboard[7] === Gameboard.gameboard[8] && Gameboard.gameboard[8] !== "") ||
+            
+            (Gameboard.gameboard[0] === Gameboard.gameboard[3] && Gameboard.gameboard[3] === Gameboard.gameboard[6] && Gameboard.gameboard[6] !== "") ||
+            (Gameboard.gameboard[1] === Gameboard.gameboard[4] && Gameboard.gameboard[4] === Gameboard.gameboard[7] && Gameboard.gameboard[7] !== "") ||
+            (Gameboard.gameboard[2] === Gameboard.gameboard[5] && Gameboard.gameboard[5] === Gameboard.gameboard[8] && Gameboard.gameboard[8] !== "") ||
+        
+            (Gameboard.gameboard[0] === Gameboard.gameboard[4] && Gameboard.gameboard[4] === Gameboard.gameboard[8] && Gameboard.gameboard[8] !== "") ||
+            (Gameboard.gameboard[2] === Gameboard.gameboard[4] && Gameboard.gameboard[4] === Gameboard.gameboard[6] && Gameboard.gameboard[6] !== "")) {
+                return `Winner is ${currentPlayer.name} (Marker: ${currentPlayer.marker})`
+            }
+        else if(!(Gameboard.gameboard).includes("")) {
+            return "Game is a draw"
+        }
+    }
+
+    function playMove(position) {
+        if((Gameboard.gameboard[position-1] === "X") || (Gameboard.gameboard[position-1] === "O")) {
+            return "That position is already occupied."
+        }
+        Gameboard.updateBoard(Gameboard.gameboard, currentPlayer.marker, position-1);
+        let currentState = Gameboard.returnCurrentState(Gameboard.gameboard);
+        console.log(currentState);
+    }
+
+    return {
+        startGame,
+        switchTurn,
+        checkWinner,
+        playMove
+    }
+})();

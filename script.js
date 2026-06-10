@@ -6,17 +6,17 @@ const Gameboard = {
         "", "", ""
     ],
     
-    returnCurrentState(gameboard) {
-        return gameboard;
+    returnCurrentState() {
+        return Gameboard.gameboard;
     },
 
-    updateBoard(gameboard, marker, position) {
-        gameboard[position] = marker;
+    updateBoard(marker, position) {
+        (Gameboard.gameboard)[position] = marker;
     },
 
-    resetBoard(gameboard) {
-        for(let i=0; i<gameboard.length; i++) {
-            gameboard[i] = "";
+    resetBoard() {
+        for(let i=0; i<(Gameboard.gameboard).length; i++) {
+            (Gameboard.gameboard)[i] = "";
         }
     }
 }

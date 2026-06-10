@@ -57,8 +57,14 @@ const GameController = (function() {
     let currentPlayer;
 
     function startGame() {
-        player1 = Players.createPlayer1("Aditya", "X", 0);
-        player2 = Players.createPlayer2("Bob", "O", 0)
+        let p1name = document.querySelector("#p1name");
+        let p1marker = document.querySelector("input[name=p1marker]:checked");
+        player1 = Players.createPlayer1(p1name.value, p1marker.value, 0);
+
+        let p2name = document.querySelector("#p2name");
+        let p2marker = document.querySelector("input[name=p2marker]:checked");
+        player2 = Players.createPlayer2(p2name.value, p2marker.value, 0);
+
         currentPlayer = player1;
     }
 
@@ -93,8 +99,8 @@ const GameController = (function() {
         if((Gameboard.gameboard[position-1] === "X") || (Gameboard.gameboard[position-1] === "O")) {
             return "That position is already occupied."
         }
-        Gameboard.updateBoard(Gameboard.gameboard, currentPlayer.marker, position-1);
-        let currentState = Gameboard.returnCurrentState(Gameboard.gameboard);
+        Gameboard.updateBoard(currentPlayer.marker, position-1);
+        let currentState = Gameboard.returnCurrentState();
         console.log(currentState);
     }
 
@@ -105,3 +111,14 @@ const GameController = (function() {
         playMove
     }
 })();
+
+displayController = {
+    startGame() {
+        playButton = document.querySelector("#playButton")
+        playButton.addEventListener("click", () => {
+            GameController.startGame()
+        })
+    }
+}
+
+displayController.startGame();

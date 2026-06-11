@@ -1,0 +1,14 @@
+h1 {
+    text-align: center;
+}
+
+.container {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 120px 120px 120px;
+    grid-template-rows: 120px 120px 120px;
+}
+
+.container > div {
+    border: 1px solid black;
+}

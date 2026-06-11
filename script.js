@@ -57,16 +57,42 @@ const GameController = (function() {
     let currentPlayer;
 
     function startGame() {
-        let p1name = document.querySelector("#p1name");
-        let p1marker = document.querySelector("input[name=p1marker]:checked");
-        player1 = Players.createPlayer1(p1name.value, p1marker.value, 0);
+        if (document.querySelector("#playButton")) {
+            let p1name = document.querySelector("#p1name");
+            let p1marker = document.querySelector("input[name=p1marker]:checked");
+            player1 = Players.createPlayer1(p1name.value, p1marker.value, 0);
 
-        let p2name = document.querySelector("#p2name");
-        let p2marker = document.querySelector("input[name=p2marker]:checked");
-        player2 = Players.createPlayer2(p2name.value, p2marker.value, 0);
+            let p2name = document.querySelector("#p2name");
+            let p2marker = document.querySelector("input[name=p2marker]:checked");
+            player2 = Players.createPlayer2(p2name.value, p2marker.value, 0);
 
-        currentPlayer = player1;
+            currentPlayer = player1;
+
+            sessionStorage.setItem(
+                "player1",
+                JSON.stringify(player1)
+            );
+
+            sessionStorage.setItem(
+                "player2",
+                JSON.stringify(player2)
+            );
+
+            window.location.href = "./game.html";
+        }
+        if (document.querySelector(".container")) {
+            player1 = JSON.parse(
+                sessionStorage.getItem("player1")
+            );
+
+            player2 = JSON.parse(
+                sessionStorage.getItem("player2")
+            );
+
+            currentPlayer = player1;
+                }
     }
+        
 
     function switchTurn() {
         if(currentPlayer === player1) {
@@ -112,13 +138,39 @@ const GameController = (function() {
     }
 })();
 
-displayController = {
+const displayController = {
     startGame() {
-        playButton = document.querySelector("#playButton")
+        const playButton = document.querySelector("#playButton")
         playButton.addEventListener("click", () => {
-            GameController.startGame()
+            GameController.startGame();
+        })
+    },
+
+    displayBoard() {
+        const cells = document.querySelectorAll(".container > div");
+
+        cells.forEach((cell, index) => {
+        cell.innerText = (Gameboard.gameboard)[index];
+        });
+    },
+
+    displayMove() {
+        const gameboardContainer = document.querySelector(".container");
+        gameboardContainer.addEventListener("click", (e) => {
+            let locationCell = e.target;
+            const index = Array.from(gameboardContainer.children).indexOf(locationCell);
+            GameController.playMove(index+1);
+            displayController.displayBoard();
+            GameController.switchTurn();
         })
     }
 }
 
-displayController.startGame();
+if (document.querySelector("#playButton")) {
+    displayController.startGame();
+}
+
+if (document.querySelector(".container")) {
+    GameController.startGame();
+    displayController.displayMove();
+}

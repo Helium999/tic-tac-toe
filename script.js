@@ -179,6 +179,59 @@ const displayController = {
 }
 
 if (document.querySelector("#playButton")) {
+    const p1markers = document.querySelectorAll("input[name=p1marker]");
+    const p2markers = document.querySelectorAll("input[name=p2marker]");
+
+    for(let marker of p1markers) {
+        marker.addEventListener("change", (e) => {
+            if(e.target.id === "p1markerx" && e.target.checked) {
+                for(let p2marker of p2markers) {
+                    if(p2marker.id === "p2markerx") {
+                        p2marker.disabled = true;
+                    }
+                    if(p2marker.id === "p2markero") {
+                        p2marker.disabled = false;
+                    }
+                }
+            }
+            if(e.target.id === "p1markero" && e.target.checked) {
+                for(let p2marker of p2markers) {
+                    if(p2marker.id === "p2markero") {
+                        p2marker.disabled = true;
+                    }
+                    if(p2marker.id === "p2markerx") {
+                        p2marker.disabled = false;
+                    }
+                }
+            }
+        })
+    }
+    
+    for(let marker of p2markers) {
+        marker.addEventListener("change", (e) => {
+            if(e.target.id === "p2markerx" && e.target.checked) {
+                for(let p1marker of p1markers) {
+                    if(p1marker.id === "p1markerx") {
+                        p1marker.disabled = true;
+                    }
+                    if(p1marker.id === "p1markero") {
+                        p1marker.disabled = false;
+                    }
+                }
+            }
+            if(e.target.id === "p2markero" && e.target.checked) {
+                for(let p1marker of p1markers) {
+                    if(p1marker.id === "p1markero") {
+                        p1marker.disabled = true;
+                    }
+                    if(p1marker.id === "p1markerx") {
+                        p1marker.disabled = false;
+                    }
+                }
+            }
+        })
+    }
+
     displayController.startGame();
 }
 

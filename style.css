@@ -12,3 +12,7 @@ h1 {
 .container > div {
     border: 1px solid black;
 }
+
+.gameResultAnnouncement {
+    text-align: center;
+}

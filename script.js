@@ -127,7 +127,6 @@ const GameController = (function() {
         }
         Gameboard.updateBoard(currentPlayer.marker, position-1);
         let currentState = Gameboard.returnCurrentState();
-        console.log(currentState);
     }
 
     return {
@@ -154,14 +153,27 @@ const displayController = {
         });
     },
 
+    displayResult(result) {
+        gameResultAnnouncement = document.querySelector(".gameResultAnnouncement");
+        gameResultAnnouncement.innerText = result;
+    },
+
     displayMove() {
         const gameboardContainer = document.querySelector(".container");
         gameboardContainer.addEventListener("click", (e) => {
             let locationCell = e.target;
             const index = Array.from(gameboardContainer.children).indexOf(locationCell);
-            GameController.playMove(index+1);
+            movePlayed = GameController.playMove(index+1);
             displayController.displayBoard();
-            GameController.switchTurn();
+            let result = GameController.checkWinner();
+            if(result) {
+                displayController.displayResult(result);
+            }
+            if(!result) {
+                if (movePlayed !== "That position is already occupied.") {
+                    GameController.switchTurn();
+                }
+            }
         })
     }
 }
